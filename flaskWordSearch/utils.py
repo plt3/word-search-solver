@@ -1,8 +1,21 @@
 import requests
 from bs4 import BeautifulSoup
 
+testUrls = [
+    # the two below (halloween, relationshipts) have multiple occurences
+    "http://www.whenwewordsearch.com/word_search/autumn_and_halloween/92158/word_search.jsp",
+    "http://www.whenwewordsearch.com/word_search/relationships/390/word_search.jsp",
+    # one below (50 states) is poorly designed so the program doesn't find Virginia
+    "http://www.whenwewordsearch.com/word_search/all_50_states/13/word_search.jsp",
+]
+
 
 def findWords(grid, words):
+    """
+    Return dictionary with each word as key and list of tuples of direction and first
+    letter coordinates for all found spots as values
+    """
+
     noSpaceWords = [word.replace(" ", "") for word in words]
     wordsDict = {noSpace: space for noSpace, space in zip(noSpaceWords, words)}
 
@@ -10,6 +23,7 @@ def findWords(grid, words):
 
     occupiedSpaces = []
     foundWords = []
+    foundDict = {}
     foundTotal = 0
 
     for word in noSpaceWords:
@@ -131,46 +145,40 @@ def findWords(grid, words):
                                 break
 
                         if not overlap:
-                            print(
-                                f"{direction[0]}: found {wordsDict[word]} at ({colInd}, {rowInd})"
-                            )
+                            foundPlace = (direction[0], (colInd, rowInd))
+
+                            if wordsDict[word] in foundDict:
+                                foundDict[wordsDict[word]].append(foundPlace)
+                            else:
+                                foundDict[wordsDict[word]] = [foundPlace]
+
                             foundTotal += 1
                             occupiedSpaces.append(direction[1])
                             foundWords.append(wordsDict[word])
                             break
 
-    notFoundWords = []
-
     for word in words:
         if word not in foundWords:
-            notFoundWords.append(word)
+            foundDict[word] = []
 
-    if not len(notFoundWords):
-        print(f"\nFound all {len(words)} words in game!")
-    else:
-        notFound = len(words) - len(notFoundWords)
-        print(f"\nFound {notFound} of {len(words)} words. Didn't find:")
-        print("\n".join(notFoundWords))
+    return foundDict
 
 
-def getHtml():
-    res = requests.get(
-        # the two below (halloween, relationshipts) have multiple occurences
-        "http://www.whenwewordsearch.com/word_search/autumn_and_halloween/92158/word_search.jsp"
-        # "http://www.whenwewordsearch.com/word_search/relationships/390/word_search.jsp"
-        # one below (50 states) is poorly designed so the program doesn't find Virginia
-        # "http://www.whenwewordsearch.com/word_search/all_50_states/13/word_search.jsp"
-    )
+def getHtml(url):
+    res = requests.get(url)
     res.raise_for_status()
 
     fullHtml = res.text
-    # with open("page.html") as f:
-    #     fullHtml = f.read()
 
     return fullHtml
 
 
 def getGridAndList(htmlPage):
+    """
+    Parse page and return tuple of list of lists representing word search grid and list
+    of words to be found in grid
+    """
+
     soup = BeautifulSoup(htmlPage, "lxml")
     puzzleTable = soup.select_one("table.puzzlegrid")
     answerTable = soup.select_one("td.datalistcolumn > table")
@@ -193,11 +201,8 @@ def getGridAndList(htmlPage):
     return (gameGrid, wordsList)
 
 
-def main():
-    pageContent = getHtml()
-    fullGrid, wordsList = getGridAndList(pageContent)
-    findWords(fullGrid, wordsList)
-
-
-if __name__ == "__main__":
-    main()
+# def main():
+#     pageContent = getHtml(testUrls[2])
+#     fullGrid, wordsList = getGridAndList(pageContent)
+#     resultDict = findWords(fullGrid, wordsList)
+#     print(resultDict)
