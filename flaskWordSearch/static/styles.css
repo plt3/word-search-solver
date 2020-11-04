@@ -1,0 +1,24 @@
+form {
+  padding-top: 30px;
+}
+
+.form-group1 {
+  /* padding-bottom: 8px; */
+}
+
+.form-group2 {
+  padding-top: 8px;
+}
+
+.form-box {
+  width: 60%;
+}
+
+.form-error {
+  border: 1px solid red;
+  background-color: #F2B8C1;
+  border-radius: 5px;
+  padding: 5px;
+  margin-top: 10px;
+  display: inline-block;
+}

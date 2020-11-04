@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+</head>
+<body>
+  {% for row in grid %}
+    {% for cell in row %}
+      <span> {{ cell }} </span>
+    {% endfor %}
+    <br>
+  {% endfor %}
+</body>
+</html>
