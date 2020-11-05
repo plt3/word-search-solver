@@ -19,11 +19,16 @@ def home():
 
 @app.route("/puzzle")
 def wordSearchPage():
-    # return request.args.get("url")
-    pageContent = getHtml(request.args.get("url"))
-    fullGrid, wordsList = getGridAndList(pageContent)
+    fullUrl = "http://www.whenwewordsearch.com/word_search/" + request.args.get("url")
+    try:
+        pageContent = getHtml(fullUrl)
+        fullGrid, wordsList = getGridAndList(pageContent)
+    except Exception:
+        return "ERROR: url parameter is not valid link to puzzle."
     # resultDict = findWords(fullGrid, wordsList)
-    return render_template("puzzle.html", grid=fullGrid, words=wordsList)
+    return render_template(
+        "puzzle.html", grid=fullGrid, words=wordsList, timeStamp=time.time()
+    )
 
 
 if __name__ == "__main__":

@@ -2,14 +2,19 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title></title>
+  <title>Puzzle Solver</title>
+  <script type="text/javascript" src="http://livejs.com/live.js"></script>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css', t=timeStamp) }}">
 </head>
 <body>
-  {% for row in grid %}
-    {% for cell in row %}
-      <span> {{ cell }} </span>
+  <table>
+    {% for row in grid %}
+      <tr class="table-row">
+        {% for cell in row %}
+        <td class="table-data">{{ cell }}</td>
+        {% endfor %}
+      </tr>
     {% endfor %}
-    <br>
-  {% endfor %}
+  </table>
 </body>
 </html>
