@@ -4,17 +4,24 @@
   <meta charset="UTF-8">
   <title>Puzzle Solver</title>
   <script type="text/javascript" src="http://livejs.com/live.js"></script>
-  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css', t=timeStamp) }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='puzzleStyles.css', t=timeStamp) }}">
 </head>
 <body>
   <table>
     {% for row in grid %}
+      {% set rowId = loop.index0 %}
       <tr class="table-row">
         {% for cell in row %}
-        <td class="table-data">{{ cell }}</td>
+        <td class="table-data" id="{{ loop.index0 }} {{ rowId }}">{{ cell }}</td>
         {% endfor %}
       </tr>
     {% endfor %}
   </table>
+  <div class="words-container">
+    {% for word in words %}
+    <p id="{{ resDict[word] }}">{{ word }}</p>
+    {% endfor %}
+  </div>
+  <script src="{{ url_for('static', filename='puzzlePage.js', t=timeStamp) }}"></script>
 </body>
 </html>

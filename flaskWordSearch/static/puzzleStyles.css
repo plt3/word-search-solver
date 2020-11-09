@@ -1,0 +1,21 @@
+body {
+  display: grid;
+  grid-template-columns: auto auto;
+}
+
+table {
+  background-color: black;
+}
+
+.table-data {
+  background-color: white;
+  /* font-size: 20px; */
+  /* gonna have to find a way to dynamically size this to the page, somehow changing font size */
+  text-align: center;
+  /* padding: 5px; */
+}
+
+.words-container {
+  display: grid;
+  grid-template-columns: auto auto;
+}

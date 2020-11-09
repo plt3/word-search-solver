@@ -2,10 +2,6 @@ form {
   padding-top: 30px;
 }
 
-table {
-  background-color: black;
-}
-
 .form-group1 {
   /* padding-bottom: 8px; */
 }
@@ -25,12 +21,4 @@ table {
   padding: 5px;
   margin-top: 10px;
   display: inline-block;
-}
-
-.table-data {
-  background-color: white;
-  font-size: 20px;
-  /* gonna have to find a way to dynamically size this to the page, somehow changing font size */
-  text-align: center;
-  padding: 5px;
 }

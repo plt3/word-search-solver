@@ -19,15 +19,26 @@ def home():
 
 @app.route("/puzzle")
 def wordSearchPage():
-    fullUrl = "http://www.whenwewordsearch.com/word_search/" + request.args.get("url")
+    # fullUrl = "http://www.whenwewordsearch.com/word_search/" + request.args.get("url")
     try:
-        pageContent = getHtml(fullUrl)
+        # pageContent = getHtml(fullUrl)
+
+        # delete this when ready to actually run server
+        with open("warof1812.html") as f:
+            pageContent = f.read()
+        # end delete block
+
         fullGrid, wordsList = getGridAndList(pageContent)
     except Exception:
         return "ERROR: url parameter is not valid link to puzzle."
-    # resultDict = findWords(fullGrid, wordsList)
+    resultDict = findWords(fullGrid, wordsList)
     return render_template(
-        "puzzle.html", grid=fullGrid, words=wordsList, timeStamp=time.time()
+        "puzzle.html",
+        grid=fullGrid,
+        words=wordsList,
+        # turning all the lists into strings is shameful. Better way to do this???
+        resDict={word: str(resultDict[word]) for word in resultDict.keys()},
+        timeStamp=time.time(),
     )
 
 
