@@ -1,3 +1,4 @@
+import json
 import time
 
 from flask import Flask, redirect, render_template, request, url_for
@@ -23,8 +24,10 @@ def wordSearchPage():
     try:
         # pageContent = getHtml(fullUrl)
 
-        # delete this when ready to actually run server
-        with open("warof1812.html") as f:
+        # delete this (and uncomment two lines above) when ready to actually run server
+        # with open("warof1812.html") as f:
+        # with open("relationships.html") as f:
+        with open("cantfind.html") as f:
             pageContent = f.read()
         # end delete block
 
@@ -32,12 +35,14 @@ def wordSearchPage():
     except Exception:
         return "ERROR: url parameter is not valid link to puzzle."
     resultDict = findWords(fullGrid, wordsList)
+
     return render_template(
         "puzzle.html",
         grid=fullGrid,
         words=wordsList,
         # turning all the lists into strings is shameful. Better way to do this???
-        resDict={word: str(resultDict[word]) for word in resultDict.keys()},
+        # resDict={word: str(resultDict[word]) for word in resultDict.keys()},
+        resDict={word: json.dumps(resultDict[word]) for word in resultDict.keys()},
         timeStamp=time.time(),
     )
 

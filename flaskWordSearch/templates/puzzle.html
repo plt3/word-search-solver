@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Puzzle Solver</title>
-  <script type="text/javascript" src="http://livejs.com/live.js"></script>
+  <!-- <script type="text/javascript" src="http://livejs.com/live.js"></script> -->
   <link rel="stylesheet" href="{{ url_for('static', filename='puzzleStyles.css', t=timeStamp) }}">
 </head>
 <body>
@@ -19,7 +19,7 @@
   </table>
   <div class="words-container">
     {% for word in words %}
-    <p id="{{ resDict[word] }}">{{ word }}</p>
+    <p id="{{ resDict[word] }}" onclick="highlightWord()">{{ word }}</p>
     {% endfor %}
   </div>
   <script src="{{ url_for('static', filename='puzzlePage.js', t=timeStamp) }}"></script>
