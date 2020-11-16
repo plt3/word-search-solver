@@ -29,6 +29,30 @@ table {
   background-color: gray;
 }
 
+.nav-buttons {
+  margin: auto;
+  margin-top: 20px;
+}
+
+.nav-buttons > * {
+  display: inline;
+  border: 1px solid black;
+  padding: 7px;
+  font-weight: bold;
+  font-size: large;
+  border-radius: 10px;
+}
+
+.nav-buttons > *:hover {
+  background-color: black;
+  color: gray;
+}
+
+.nav-buttons > a {
+  text-decoration: none;
+  color: black;
+}
+
 #title {
   margin: auto;
   font-size: xx-large;
@@ -37,18 +61,4 @@ table {
 #subtitle {
   margin: auto;
   font-size: x-large;
-}
-
-#highlight-all {
-  border: 1px solid black;
-  margin: auto;
-  padding: 7px;
-  font-weight: bold;
-  font-size: large;
-  border-radius: 10px;
-}
-
-#highlight-all:hover {
-  background-color: black;
-  color: gray;
 }

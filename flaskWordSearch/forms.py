@@ -2,7 +2,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField
 from wtforms.validators import ValidationError
 
-from utils import getGridAndList, getHtml
+from flaskWordSearch.utils import getGridAndList, getHtml
 
 
 class urlForm(FlaskForm):

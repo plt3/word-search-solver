@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>{{ title }} Puzzle Solver</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='puzzleStyles.css', t=timeStamp) }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='puzzleStyles.css') }}">
 </head>
 <body>
   <p id="title">{{ title }} Puzzle Solution</p>
@@ -23,7 +23,10 @@
     <p id="{{ resDict[word] }}" onclick="highlightWord()" onmouseover="changeBackground()" onmouseout="changeBackground()">{{ word }}</p>
     {% endfor %}
   </div>
-  <p id="highlight-all" onclick="highlightAll()">Find all words</p>
-  <script src="{{ url_for('static', filename='puzzlePage.js', t=timeStamp) }}"></script>
+  <div class="nav-buttons">
+    <p id="highlight-all" onclick="highlightAll()">Find all words</p>
+    <a href="{{ url_for('home') }}">Back to home</a>
+  </div>
+  <script src="{{ url_for('static', filename='puzzlePage.js') }}"></script>
 </body>
 </html>
