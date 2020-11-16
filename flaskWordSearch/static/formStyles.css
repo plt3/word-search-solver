@@ -1,9 +1,9 @@
-form {
-  padding-top: 30px;
+body {
+  background-color: gray;
 }
 
-.form-group1 {
-  /* padding-bottom: 8px; */
+form {
+  padding-top: 30px;
 }
 
 .form-group2 {

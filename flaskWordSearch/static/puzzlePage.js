@@ -1,9 +1,10 @@
-const MIN_DIM = Math.min.apply(null, [window.innerHeight, window.innerWidth]) * .97;
+const ADJUSTED_WIDTH = window.innerWidth * 0.97
+const ADJUSTED_HEIGHT = window.innerHeight * 0.93 * 0.6
 const PUZZLE_TABLE = document.getElementsByTagName('table')[0];
 const TABLE_BODY = document.getElementsByTagName('tbody')[0];
-
-// TODO: figure out how to make words list fit on the page next to the grid depending on
-// if it's on mobile or not
+const WORDS_BOX = document.getElementsByClassName('words-container')[0];
+const EMPTY_BACK = 'gray';
+const FULL_BACK = 'black';
 
 function genRandomRGB() {
   let rgb = 'rgb(';
@@ -21,6 +22,14 @@ function clearGrid() {
       if (elem.tagName === 'TD') {
         elem.style.backgroundColor = 'white';
       }
+    }
+  }
+}
+
+function clearWords() {
+  for (let word of WORDS_BOX.childNodes) {
+    if (word.tagName === 'P') {
+      word.style.color = 'black';
     }
   }
 }
@@ -47,19 +56,30 @@ function highlightOtherNodes(start, length, xStep, yStep, colorBack) {
   }
 }
 
-function highlightWord() {
-  clearGrid();
+function highlightWord(element=false) {
+  let giveError = false;
 
-  const foundArr = JSON.parse(event.target.id);
-  const wordLength = event.target.innerHTML.replace(/\s/g, '').length;
+  if (! element) {
+    element = event.target;
+    giveError = true;
+    clearGrid();
+    clearWords();
+  }
 
-  if (! foundArr.length) {
-    alert(`We couldn\'t find ${event.target.innerHTML} in this puzzle. This is most` +
+  const foundArr = JSON.parse(element.id);
+  const wordLength = element.innerHTML.replace(/\s/g, '').length;
+
+  if (! foundArr.length && giveError) {
+    alert(`We couldn\'t find ${element.innerHTML} in this puzzle. This is most` +
           ' likely due to it being a subset of another word in the grid.')
   } else {
     for (let i = 0; i < foundArr.length; i++) {
       const startingNode = findStartNode(foundArr[i]);
       let backColor = genRandomRGB();
+
+      if (i === 0) {
+        element.style.color = backColor;
+      }
 
       switch (foundArr[i][0]) {
         case 'N':
@@ -91,5 +111,47 @@ function highlightWord() {
   }
 }
 
-PUZZLE_TABLE.style.width = MIN_DIM + 'px';
-PUZZLE_TABLE.style.height = MIN_DIM + 'px';
+function highlightAll() {
+  clearGrid();
+
+  for (let node of WORDS_BOX.childNodes) {
+    if (node.tagName === 'P') {
+      highlightWord(node);
+    }
+  }
+
+  clearWords();
+}
+
+function changeBackground() {
+  const prevColor = event.target.style.color;
+
+  if (event.target.style.backgroundColor !== FULL_BACK) {
+    event.target.style.backgroundColor = FULL_BACK;
+    if (prevColor !== FULL_BACK && prevColor) {
+      event.target.style.color = prevColor;
+    } else {
+      event.target.style.color = EMPTY_BACK;
+    }
+  } else {
+    event.target.style.backgroundColor = EMPTY_BACK;
+    if (prevColor !== EMPTY_BACK) {
+      event.target.style.color = prevColor;
+    } else {
+      event.target.style.color = FULL_BACK;
+    }
+  }
+}
+
+if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+  // slightly different styling if on mobile
+  PUZZLE_TABLE.style.width = ADJUSTED_WIDTH + 'px';
+  PUZZLE_TABLE.style.height = ADJUSTED_WIDTH + 'px';
+
+  for (let node of WORDS_BOX.getElementsByTagName('p')) {
+    node.style.fontSize = 'large';
+  }
+} else {
+  PUZZLE_TABLE.style.width = ADJUSTED_HEIGHT + 'px';
+  PUZZLE_TABLE.style.height = ADJUSTED_HEIGHT + 'px';
+}

@@ -1,21 +1,54 @@
 body {
   display: grid;
-  grid-template-columns: auto auto;
+  background-color: gray;
 }
 
 table {
   background-color: black;
+  margin: auto;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 
 .table-data {
   background-color: white;
-  /* font-size: 20px; */
-  /* gonna have to find a way to dynamically size this to the page, somehow changing font size */
   text-align: center;
-  /* padding: 5px; */
 }
 
 .words-container {
-  display: grid;
-  grid-template-columns: auto auto;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.words-container > p {
+  border: 1px solid black;
+  border-radius: 3px;
+  padding: 1px 2px 1px 2px;
+  margin-left: 2px;
+  background-color: gray;
+}
+
+#title {
+  margin: auto;
+  font-size: xx-large;
+}
+
+#subtitle {
+  margin: auto;
+  font-size: x-large;
+}
+
+#highlight-all {
+  border: 1px solid black;
+  margin: auto;
+  padding: 7px;
+  font-weight: bold;
+  font-size: large;
+  border-radius: 10px;
+}
+
+#highlight-all:hover {
+  background-color: black;
+  color: gray;
 }

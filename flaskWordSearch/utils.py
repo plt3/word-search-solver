@@ -1,14 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
 
-testUrls = [
-    # the two below (halloween, relationshipts) have multiple occurences
-    "http://www.whenwewordsearch.com/word_search/autumn_and_halloween/92158/word_search.jsp",
-    "http://www.whenwewordsearch.com/word_search/relationships/390/word_search.jsp",
-    # one below (50 states) is poorly designed so the program doesn't find Virginia
-    "http://www.whenwewordsearch.com/word_search/all_50_states/13/word_search.jsp",
-]
-
 
 def findWords(grid, words):
     """
@@ -173,6 +165,13 @@ def getHtml(url):
     return fullHtml
 
 
+def getTitle(htmlPage):
+    soup = BeautifulSoup(htmlPage, "lxml")
+    title = soup.select_one("title").get_text().strip()
+
+    return title[: title.find(" Word Search Puzzle")]
+
+
 def getGridAndList(htmlPage):
     """
     Parse page and return tuple of list of lists representing word search grid and list
@@ -199,10 +198,3 @@ def getGridAndList(htmlPage):
                 wordsList.append(targetWord)
 
     return (gameGrid, wordsList)
-
-
-# def main():
-#     pageContent = getHtml(testUrls[2])
-#     fullGrid, wordsList = getGridAndList(pageContent)
-#     resultDict = findWords(fullGrid, wordsList)
-#     print(resultDict)

@@ -1,13 +1,14 @@
 import json
+import os
 import time
 
 from flask import Flask, redirect, render_template, request, url_for
 
 from forms import urlForm
-from utils import findWords, getGridAndList, getHtml
+from utils import findWords, getGridAndList, getHtml, getTitle
 
 app = Flask(__name__)
-app.config["SECRET_KEY"] = "M-{4;:66>_0E%ziF%y)#m<Rye#Y5&RU{[&24y,<9"
+app.config["SECRET_KEY"] = os.environ.get("WORD_SEARCH_KEY")
 
 
 @app.route("/", methods=["GET", "POST"])
@@ -20,32 +21,25 @@ def home():
 
 @app.route("/puzzle")
 def wordSearchPage():
-    # fullUrl = "http://www.whenwewordsearch.com/word_search/" + request.args.get("url")
+    fullUrl = "http://www.whenwewordsearch.com/word_search/" + request.args.get("url")
     try:
-        # pageContent = getHtml(fullUrl)
-
-        # delete this (and uncomment two lines above) when ready to actually run server
-        # with open("warof1812.html") as f:
-        # with open("relationships.html") as f:
-        with open("cantfind.html") as f:
-            pageContent = f.read()
-        # end delete block
+        pageContent = getHtml(fullUrl)
 
         fullGrid, wordsList = getGridAndList(pageContent)
+        title = getTitle(pageContent)
     except Exception:
         return "ERROR: url parameter is not valid link to puzzle."
     resultDict = findWords(fullGrid, wordsList)
 
     return render_template(
         "puzzle.html",
+        title=title,
         grid=fullGrid,
         words=wordsList,
-        # turning all the lists into strings is shameful. Better way to do this???
-        # resDict={word: str(resultDict[word]) for word in resultDict.keys()},
         resDict={word: json.dumps(resultDict[word]) for word in resultDict.keys()},
         timeStamp=time.time(),
     )
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host="0.0.0.0", debug=True)

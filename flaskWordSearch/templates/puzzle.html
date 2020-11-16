@@ -2,11 +2,12 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Puzzle Solver</title>
-  <!-- <script type="text/javascript" src="http://livejs.com/live.js"></script> -->
+  <title>{{ title }} Puzzle Solver</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='puzzleStyles.css', t=timeStamp) }}">
 </head>
 <body>
+  <p id="title">{{ title }} Puzzle Solution</p>
+  <p id="subtitle">Click on any of the words below to find it in the grid!</p>
   <table>
     {% for row in grid %}
       {% set rowId = loop.index0 %}
@@ -19,9 +20,10 @@
   </table>
   <div class="words-container">
     {% for word in words %}
-    <p id="{{ resDict[word] }}" onclick="highlightWord()">{{ word }}</p>
+    <p id="{{ resDict[word] }}" onclick="highlightWord()" onmouseover="changeBackground()" onmouseout="changeBackground()">{{ word }}</p>
     {% endfor %}
   </div>
+  <p id="highlight-all" onclick="highlightAll()">Find all words</p>
   <script src="{{ url_for('static', filename='puzzlePage.js', t=timeStamp) }}"></script>
 </body>
 </html>
