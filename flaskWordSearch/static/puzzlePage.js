@@ -6,6 +6,16 @@ const WORDS_BOX = document.getElementsByClassName('words-container')[0];
 const EMPTY_BACK = 'gray';
 const FULL_BACK = 'black';
 
+// solvedObj holds all information about where words are in grid
+let solvedObj = {};
+
+const urlParam = new URLSearchParams(window.location.search).get('url');
+
+// this populates solvedObj by making a request to the api endpoint to solve the puzzle
+fetch(window.location.origin + '/api/solvePuzzle?url=' + urlParam)
+  .then(response => response.json())
+  .then(data => solvedObj = data);
+
 function genRandomRGB() {
   let rgb = 'rgb(';
   for (let i = 0; i < 3; i++) {
@@ -66,7 +76,7 @@ function highlightWord(element=false) {
     clearWords();
   }
 
-  const foundArr = JSON.parse(element.id);
+  const foundArr = solvedObj[element.innerHTML];
   const wordLength = element.innerHTML.replace(/\s/g, '').length;
 
   if (! foundArr.length && giveError) {

@@ -13,14 +13,14 @@
       {% set rowId = loop.index0 %}
       <tr class="table-row">
         {% for cell in row %}
-        <td class="table-data" id="{{ loop.index0 }} {{ rowId }}">{{ cell }}</td>
+          <td class="table-data" id="{{ loop.index0 }} {{ rowId }}">{{ cell }}</td>
         {% endfor %}
       </tr>
     {% endfor %}
   </table>
   <div class="words-container">
     {% for word in words %}
-    <p id="{{ resDict[word] }}" onclick="highlightWord()" onmouseover="changeBackground()" onmouseout="changeBackground()">{{ word }}</p>
+      <p onclick="highlightWord()" onmouseover="changeBackground()" onmouseout="changeBackground()">{{ word }}</p>
     {% endfor %}
   </div>
   <div class="nav-buttons">

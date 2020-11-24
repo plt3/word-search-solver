@@ -22,3 +22,27 @@ form {
   margin-top: 10px;
   display: inline-block;
 }
+
+#error-container {
+  padding: 30px;
+  text-align: center;
+}
+
+#error-message {
+  font-size: xx-large;
+}
+
+#error-container > a {
+  text-decoration: none;
+  padding: 7px;
+  font-size: large;
+  font-weight: bold;
+  color: black;
+  border: 1px solid black;
+  border-radius: 10px;
+}
+
+#error-container > a:hover {
+  background-color: black;
+  color: gray;
+}

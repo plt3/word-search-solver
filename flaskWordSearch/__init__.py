@@ -1,4 +1,3 @@
-import json
 import os
 
 from flask import Flask, redirect, render_template, request, url_for
@@ -20,20 +19,62 @@ def home():
 
 @app.route("/puzzle")
 def wordSearchPage():
-    fullUrl = "http://www.whenwewordsearch.com/word_search/" + request.args.get("url")
+    urlParam = request.args.get("url")
+
     try:
-        pageContent = getHtml(fullUrl)
+        if not urlParam.startswith("http://www.whenwewordsearch.com/word_search/"):
+            urlParam = "http://www.whenwewordsearch.com/word_search/" + urlParam
+    except AttributeError:
+        return (
+            render_template(
+                "error.html",
+                error='400 ERROR: no "url" query parameter passed',
+            ),
+            400,
+        )
+    try:
+        pageContent = getHtml(urlParam)
 
         fullGrid, wordsList = getGridAndList(pageContent)
         title = getTitle(pageContent)
     except Exception:
-        return "ERROR: url parameter is not valid link to puzzle."
-    resultDict = findWords(fullGrid, wordsList)
+        return (
+            render_template(
+                "error.html", error="404 ERROR: we couldn't find a puzzle at that link."
+            ),
+            404,
+        )
 
     return render_template(
         "puzzle.html",
         title=title,
         grid=fullGrid,
         words=wordsList,
-        resDict={word: json.dumps(resultDict[word]) for word in resultDict.keys()},
     )
+
+
+@app.route("/api/solvePuzzle", methods=["GET"])
+def jsonSolve():
+    """
+    Small API that takes a "url" query parameter of the page to a word search puzzle
+    and returns a JSON string of the words to find and their starting points and
+    directions
+    """
+
+    urlParam = request.args.get("url")
+
+    try:
+        if not urlParam.startswith("http://www.whenwewordsearch.com/word_search/"):
+            urlParam = "http://www.whenwewordsearch.com/word_search/" + urlParam
+    except AttributeError:
+        return {
+            "ERROR": 'Please pass query parameter called "url" with url of puzzle'
+        }, 400
+    try:
+        pageContent = getHtml(urlParam)
+
+        fullGrid, wordsList = getGridAndList(pageContent)
+    except Exception:
+        return {"ERROR": "url parameter is not valid link to puzzle."}, 404
+
+    return findWords(fullGrid, wordsList)
